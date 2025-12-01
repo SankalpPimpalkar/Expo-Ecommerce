@@ -91,7 +91,7 @@ export async function updateProduct(req, res) {
         if (stock !== undefined) product.stock = parseInt(stock)
 
 
-        if (req.files || req.files.length > 0) {
+        if (req.files && req.files.length > 0) {
             if (req.files.length > 3) {
                 return res
                     .status(400)

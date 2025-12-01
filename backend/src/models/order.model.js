@@ -15,7 +15,7 @@ const orderItemSchema = mongoose.Schema({
         required: true,
         min: 0
     },
-    quanity: {
+    quantity: {
         type: Number,
         min: 1,
         default: 1
