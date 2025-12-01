@@ -5,6 +5,7 @@ import { connectDB } from "./config/db.js";
 import { clerkMiddleware } from '@clerk/express'
 import { serve } from "inngest/express"
 import { functions, inngest } from "./config/inngest.js";
+import adminRouter from "./routes/admin.route.js";
 
 const app = express()
 const __dirname = path.resolve()
@@ -16,6 +17,8 @@ app.use(clerkMiddleware())
 
 // Routes
 app.use("/api/inngest", serve({ client: inngest, functions }))
+
+app.use("/api/admin", adminRouter)
 
 app.get("/api/health", (req, res) => {
     return res.status(200).json({ message: "Success" })
