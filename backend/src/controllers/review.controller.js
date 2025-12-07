@@ -85,9 +85,17 @@ export async function deleteReview(req, res) {
                 .json({ message: 'You are not authorized to delete this review' })
         }
 
+        const productId = review.product
         await Review.findByIdAndDelete(reviewId)
 
         const product = await Product.findById(productId)
+
+        if (!product) {
+            return res
+                .status(404)
+                .json({ message: "Product Not Found" })
+        }
+
         const reviews = await Review.find({ product: productId })
         const totalRating = reviews.reduce((sum, rev) => sum + rev.rating, 0)
         product.averageRating = totalRating / reviews.length

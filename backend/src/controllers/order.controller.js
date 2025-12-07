@@ -62,7 +62,7 @@ export async function getUserOrders(req, res) {
         const orders = await Order.find({ user: user._id }).populate("orderItems.product")
 
         return res
-            .status(201)
+            .status(200)
             .json({ message: "Order Fetched", orders })
 
     } catch (error) {
