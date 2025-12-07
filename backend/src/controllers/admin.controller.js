@@ -87,7 +87,7 @@ export async function updateProduct(req, res) {
         if (name) product.name = name.trim()
         if (description) product.description = description.trim()
         if (category) product.category = category.trim()
-        if (price) product.price = parseFloat(price)
+        if (price !== undefined) product.price = parseFloat(price)
         if (stock !== undefined) product.stock = parseInt(stock)
 
 
