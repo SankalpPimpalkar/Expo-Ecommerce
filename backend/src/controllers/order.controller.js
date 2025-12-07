@@ -55,3 +55,20 @@ export async function createOrder(req, res) {
             .json({ message: "Internal Server Error" })
     }
 }
+
+export async function getUserOrders(req, res) {
+    try {
+        const user = req.user
+        const orders = await Order.find({ user: user._id }).populate("orderItems.product")
+
+        return res
+            .status(201)
+            .json({ message: "Order Fetched", orders })
+
+    } catch (error) {
+        console.error("Error in Creating Order", error)
+        return res
+            .status(500)
+            .json({ message: "Internal Server Error" })
+    }
+}
