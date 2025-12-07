@@ -147,7 +147,7 @@ export async function getWishList(req, res) {
 
         return res
             .status(200)
-            .json({ message: "WishList Fetched", wishlist: user.wishlist })
+            .json({ message: "WishList Fetched", wishlist })
 
     } catch (error) {
         console.error("Error in Getting WishList", error)
