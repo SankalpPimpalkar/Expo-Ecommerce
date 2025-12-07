@@ -1,3 +1,4 @@
+import { User } from "../models/user.model"
 
 export async function addAddress(req, res) {
     try {
@@ -141,12 +142,12 @@ export async function addToWishList(req, res) {
 
 export async function getWishList(req, res) {
     try {
-        const user = req.user
+        const user = await User.findById(req.user._id).populate("wishlist")
         const wishlist = user.wishlist
 
         return res
             .status(200)
-            .json({ message: "WishList Fetched", wishlist })
+            .json({ message: "WishList Fetched", wishlist: user.wishlist })
 
     } catch (error) {
         console.error("Error in Getting WishList", error)
