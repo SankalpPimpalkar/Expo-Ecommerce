@@ -1,6 +1,6 @@
-import { Order } from "../models/order.model";
-import { Product } from "../models/product.model";
-import { Review } from "../models/review.model";
+import { Order } from "../models/order.model.js";
+import { Product } from "../models/product.model.js";
+import { Review } from "../models/review.model.js";
 
 export async function createOrder(req, res) {
     try {
@@ -24,10 +24,11 @@ export async function createOrder(req, res) {
             if (product.stock < item.quantity) {
                 return res
                     .status(400)
-                    .json(`Product ${product.name} is out of stock`)
+                    .json({ message: `Product ${product.name} is out of stock` })
             }
         }
 
+        // Todo - Add Transactions in Order Creation and Stock Update
         const order = await Order.create({
             user: user._id,
             clerkId: user.clerkId,
@@ -62,12 +63,15 @@ export async function getUserOrders(req, res) {
             .populate("orderItems.product")
             .sort({ createdAt: -1 })
 
+        const orderIds = orders.map(order => order._id)
+        const reviews = await Review.find({ orderId: { $in: orderIds } })
+        const reviewedOrderIds = new Set(reviews.map(review => review.orderId.toString()))
+
         const ordersWithReviewStatus = await Promise.all(
             orders.map(async (order) => {
-                const review = await Review.findOne({ orderId: order._id })
                 return {
                     ...order.toObject(),
-                    hasReviewed: !!review
+                    hasReviewed: reviewedOrderIds.has(order._id.toString())
                 }
             })
         )
