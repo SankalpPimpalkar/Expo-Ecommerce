@@ -8,6 +8,8 @@ import { functions, inngest } from "./config/inngest.js";
 import adminRouter from "./routes/admin.route.js";
 import userRouter from "./routes/user.routes.js";
 import orderRouter from "./routes/order.route.js";
+import productRouter from "./routes/product.route.js";
+import reviewRouter from "./routes/review.route.js";
 
 const app = express()
 const __dirname = path.resolve()
@@ -22,7 +24,9 @@ app.use("/api/inngest", serve({ client: inngest, functions }))
 
 app.use("/api/admin", adminRouter)
 app.use("/api/users", userRouter)
-app.use("/api/orders", orderRouter )
+app.use("/api/orders", orderRouter)
+app.use("/api/products", productRouter)
+app.use("/api/reviews", reviewRouter)
 
 app.get("/api/health", (req, res) => {
     return res.status(200).json({ message: "Success" })
