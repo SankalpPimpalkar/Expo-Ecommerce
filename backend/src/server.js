@@ -29,11 +29,11 @@ if (ENV.NODE_ENV == "production") {
 
     app.get("/{*any}", (req, res) => {
         return res
-            .sendFile(path.json(__dirname, "../admin", "dist", "index.html"))
+            .sendFile(path.join(__dirname, "../admin", "dist", "index.html"))
     })
 }
 
 app.listen(ENV.PORT, () => {
-    console.log("Server is up and runnning")
+    console.log("Server is up and runnning", ENV.PORT)
     connectDB()
 })
