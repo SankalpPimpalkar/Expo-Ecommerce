@@ -7,12 +7,12 @@ const userRouter = Router()
 // Addresses
 userRouter.post("/addresses", protectRoute, addAddress)
 userRouter.get("/addresses", protectRoute, getAddresses)
-userRouter.get("/addresses/:addressId", protectRoute, updateAddress)
+userRouter.put("/addresses/:addressId", protectRoute, updateAddress)
 userRouter.delete("/addresses/:addressId", protectRoute, deleteAddress)
 
 // Wishlists
 userRouter.post("/wishlist", protectRoute, addToWishList)
-userRouter.post("/wishlist", protectRoute, getWishList)
+userRouter.get("/wishlist", protectRoute, getWishList)
 userRouter.delete("/wishlist/:productId", protectRoute, removeFromWishList)
 
 export default userRouter;

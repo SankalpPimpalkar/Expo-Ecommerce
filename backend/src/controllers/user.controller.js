@@ -1,4 +1,3 @@
-import { User } from "../models/user.model"
 
 export async function addAddress(req, res) {
     try {
@@ -44,7 +43,7 @@ export async function getAddresses(req, res) {
             .json({ message: "Fetched addresses", addresses: user.addresses })
 
     } catch (error) {
-        console.error("Error in Getting Adding Addresses", error)
+        console.error("Error in Getting Addresses", error)
         return res
             .status(500)
             .json({ message: "Internal Server Error" })
@@ -57,7 +56,7 @@ export async function updateAddress(req, res) {
         const user = req.user
         const { addressId } = req.params
 
-        const address = req.user.id(addressId)
+        const address = req.user.addresses.id(addressId)
 
         if (!address) {
             return res
@@ -104,7 +103,7 @@ export async function deleteAddress(req, res) {
 
         return res
             .status(200)
-            .json({ message: "Address Deleleted", addresses: user.addresses })
+            .json({ message: "Address Deleted", addresses: user.addresses })
 
     } catch (error) {
         console.error("Error in Deleting Address", error)
