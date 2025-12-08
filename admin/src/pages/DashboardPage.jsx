@@ -15,7 +15,7 @@ export default function DashboardPage() {
         queryFn: statsAPI.getDashboard
     })
 
-    const recentOrders = ordersData.orders || []
+    const recentOrders = ordersData?.orders || []
     const statsCards = [
         {
             name: "Total Revenue",

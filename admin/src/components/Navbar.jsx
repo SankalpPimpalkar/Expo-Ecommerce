@@ -21,7 +21,7 @@ export default function Navbar() {
             <div className="flex-1 px-4">
                 <h1 className="text-xl font-bold">
                     {
-                        NAVIGATIONS.find(nav => nav.path == location.pathname).name || "Dashboard"
+                        NAVIGATIONS.find(nav => nav.path === location.pathname)?.name
                     }
                 </h1>
             </div>

@@ -10,7 +10,7 @@ export default function Sidebar() {
 
     return (
         <div className="drawer-side is-drawer-close:overflow-visible">
-            <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-toggle"></label>
+            <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
             <div className="flex flex-col min-h-full items-start bg-base-200 is-drawer-close:w-16 is-drawer-open:w-64">
                 <div className="p-4 w-full">
                     <div className="flex items-center gap-3">
