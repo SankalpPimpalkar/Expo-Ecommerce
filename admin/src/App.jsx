@@ -1,15 +1,43 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
+import React from 'react'
+import { Navigate, Route, Routes } from 'react-router'
+import LoginPage from './pages/LoginPage'
+import { useAuth } from '@clerk/clerk-react'
+import DashboardLayout from './pages/DashboardLayout'
+import DashboardPage from './pages/DashboardPage'
+import ProductsPage from './pages/ProductsPage'
+import OrdersPage from './pages/OrdersPage'
+import CustomersPage from './pages/CustomersPage'
+import { LoaderIcon } from 'lucide-react'
 
 export default function App() {
+
+  const { isSignedIn, isLoaded } = useAuth()
+
+  if (!isLoaded) {
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        <LoaderIcon className='size-12 animate-spin' />
+      </div>
+    )
+  }
+
   return (
-    <div>
-      <h1>Home Page</h1>
-      <SignedOut>
-        <SignInButton mode='modal ' />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-    </div>
+    <Routes>
+      <Route
+        path='/login'
+        element={isSignedIn ? <Navigate to={'/dashboard'} /> : <LoginPage />}
+      />
+
+      <Route
+        path='/'
+        element={isSignedIn ? <DashboardLayout /> : <Navigate to={'/login'} />}
+      >
+        <Route index element={<Navigate to={'dashboard'} />} />
+        <Route path='dashboard' element={<DashboardPage />} />
+        <Route path='products' element={<ProductsPage />} />
+        <Route path='orders' element={<OrdersPage />} />
+        <Route path='customers' element={<CustomersPage />} />
+      </Route>
+    </Routes>
   )
 }
