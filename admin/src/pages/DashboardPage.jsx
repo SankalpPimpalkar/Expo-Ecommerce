@@ -1,7 +1,133 @@
-import React from 'react'
+import { useQuery } from "@tanstack/react-query"
+import { orderAPI, statsAPI } from "../lib/api"
+import { DollarSignIcon, PackageIcon, ShoppingBagIcon, UserIcon } from "lucide-react"
+import { capitalizeText, formatDate, getOrderStatusBadge } from "../lib/utils"
 
 export default function DashboardPage() {
+
+    const { data: ordersData, isLoading: ordersLoading } = useQuery({
+        queryKey: ['orders'],
+        queryFn: orderAPI.getAll
+    })
+
+    const { data: statsData, isLoading: statsLoading } = useQuery({
+        queryKey: ['stats'],
+        queryFn: statsAPI.getDashboard
+    })
+
+    const recentOrders = ordersData?.orders || []
+    const statsCards = [
+        {
+            name: "Total Revenue",
+            value: statsLoading ? "..." : `$${statsData.totalRevenue.toFixed(2) || 0}`,
+            icon: <DollarSignIcon className="size-8" />
+        },
+        {
+            name: "Total Orders",
+            value: statsLoading ? "..." : `$${statsData.totalOrders || 0}`,
+            icon: <ShoppingBagIcon className="size-8" />
+        },
+        {
+            name: "Total Customers",
+            value: statsLoading ? "..." : `$${statsData.totalCustomers || 0}`,
+            icon: <UserIcon className="size-8" />
+        },
+        {
+            name: "Total Products",
+            value: statsLoading ? "..." : `$${statsData.totalProducts || 0}`,
+            icon: <PackageIcon className="size-8" />
+        },
+    ]
+
     return (
-        <div>DashboardPage</div>
+        <div className="space-y-6">
+            <div className="stats stats-vertical lg:stats-horizontal shadow w-full bg-base-200 ">
+                {
+                    statsCards.map(card => (
+                        <div key={card.name} className="stat shadow">
+                            <div className="stat-figure text-primary">{card.icon}</div>
+                            <div className="stat-title">{card.name}</div>
+                            <div className="stat-value">{card.value}</div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div className="card bg-base-200 shadow-xl">
+                <div className="card-body">
+                    <h2 className="card-title">Recent Orders</h2>
+                    {
+                        ordersLoading ? (
+                            <div className="flex justify-center py-8">
+                                <span className="loading-spinner loading-lg" />
+                            </div>
+                        ) : recentOrders.length === 0 ? (
+                            <p className="text-center py-8 text-base-content/60">
+                                No orders yet
+                            </p>
+                        ) : (
+                            <div className="overflow-x-auto">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Items</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            recentOrders.map(order => (
+                                                <tr key={order._id}>
+                                                    <td>
+                                                        <span className="font-medium">
+                                                            #{order._id.slice(-8).toUpperCase()}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <div className="font-medium">
+                                                                {order.shippingAddress.fullName}
+                                                            </div>
+                                                            <p className="text-sm opacity-60">
+                                                                {order.orderItems.length} item(s)
+                                                            </p>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p className="text-sm">
+                                                            {order.orderItems[0]?.name}
+                                                            {order.orderItems.length > 1 && ` +${order.orderItems.length - 1} more`}
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <span className="font-semibold">
+                                                            {order.totalPrice.toFixed(2)}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div className={`badge ${getOrderStatusBadge(order.status)}`}>
+                                                            {capitalizeText(order.status)}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span className="text-sm opacity-60">
+                                                            {formatDate(order.createdAt)}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        )
+                    }
+                </div>
+            </div>
+        </div>
     )
 }
