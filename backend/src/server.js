@@ -4,12 +4,14 @@ import { ENV } from "./config/config.js";
 import { connectDB } from "./config/db.js";
 import { clerkMiddleware } from '@clerk/express'
 import { serve } from "inngest/express"
+import cors from "cors"
 import { functions, inngest } from "./config/inngest.js";
 import adminRouter from "./routes/admin.route.js";
 import userRouter from "./routes/user.routes.js";
 import orderRouter from "./routes/order.route.js";
 import productRouter from "./routes/product.route.js";
 import reviewRouter from "./routes/review.route.js";
+import cartRouter from "./routes/cart.route.js";
 
 const app = express()
 const __dirname = path.resolve()
@@ -17,6 +19,10 @@ const __dirname = path.resolve()
 // Middlewares
 app.use(express.json())
 app.use(clerkMiddleware())
+app.use(cors({
+    origin: ENV.CLIENT_URL,
+    credentials: true
+}))
 
 
 // Routes
@@ -27,6 +33,7 @@ app.use("/api/users", userRouter)
 app.use("/api/orders", orderRouter)
 app.use("/api/products", productRouter)
 app.use("/api/reviews", reviewRouter)
+app.use("/api/cart", cartRouter)
 
 app.get("/api/health", (req, res) => {
     return res.status(200).json({ message: "Success" })
