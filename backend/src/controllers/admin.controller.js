@@ -122,6 +122,24 @@ export async function updateProduct(req, res) {
     }
 }
 
+export async function deleteProduct(req, res) {
+    try {
+        const { productId } = req.params
+
+        await Product.findByIdAndDelete(productId)
+
+        return res
+            .status(200)
+            .json({ message: "Product Deleted" })
+
+    } catch (error) {
+        console.error("Error in Deleting Product", error)
+        return res
+            .status(500)
+            .json({ message: "Internal Server Error" })
+    }
+}
+
 export async function getAllOrders(req, res) {
     try {
         const orders = await Order.find()
