@@ -5,12 +5,16 @@ export const productAPI = {
         const { data } = await AXIOS.get("/admin/products")
         return data
     },
-    create: async (formData) => {
+    create: async ({ formData }) => {
         const { data } = await AXIOS.post("/admin/products", formData)
         return data
     },
     update: async ({ id, formData }) => {
         const { data } = await AXIOS.put(`/admin/products/${id}`, formData)
+        return data
+    },
+    delete: async (id) => {
+        const { data } = await AXIOS.delete(`/admin/products/${id}`)
         return data
     },
 }

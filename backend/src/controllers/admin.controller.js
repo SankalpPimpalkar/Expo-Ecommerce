@@ -122,6 +122,40 @@ export async function updateProduct(req, res) {
     }
 }
 
+export async function deleteProduct(req, res) {
+    try {
+        const { productId } = req.params
+
+        const product = await Product.findById(productId)
+
+        if (!product) {
+            return res
+                .status(404)
+                .json({ message: "Product Not Found" })
+        }
+
+        if (product.images && product.images.length > 0) {
+            const deletePromises = product.images.map(imageUrl => {
+                const publicId = "products/" + imageUrl.split("/products")[1]?.split(".")[0];
+                if (publicId) return cloudinary.uploader.destroy(publicId)
+            })
+            await Promise.all(deletePromises.filter(Boolean))
+        }
+
+        await Product.findByIdAndDelete(productId)
+
+        return res
+            .status(200)
+            .json({ message: "Product Deleted" })
+
+    } catch (error) {
+        console.error("Error in Deleting Product", error)
+        return res
+            .status(500)
+            .json({ message: "Internal Server Error" })
+    }
+}
+
 export async function getAllOrders(req, res) {
     try {
         const orders = await Order.find()
