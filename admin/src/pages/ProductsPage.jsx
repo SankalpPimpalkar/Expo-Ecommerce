@@ -44,6 +44,7 @@ export default function ProductsPage() {
         }
     })
     const closeModal = () => {
+        imagePreviews.forEach(url => URL.revokeObjectURL(url))
         setShowModal(false)
         setEditingProduct(null)
         setImages([])
@@ -65,12 +66,13 @@ export default function ProductsPage() {
             stock: product.stock.toString(),
             price: product.price.toString()
         })
-        setImages(product.images)
+        setImagePreviews(product.images)
         setShowModal(true)
     }
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files)
         if (files.length > 3) return alert("Maximum 3 images allowed")
+        imagePreviews.forEach(url => URL.revokeObjectURL(url))
         setImages(files)
         setImagePreviews(files.map(file => URL.createObjectURL(file)))
     }
@@ -93,6 +95,8 @@ export default function ProductsPage() {
             createProductMutation.mutate({ formData: formDataToSend })
         }
     }
+
+    console.log(productsData?.products)
 
     return (
         <div className="space-y-6">
@@ -278,7 +282,7 @@ export default function ProductsPage() {
                             <div className="bg-base-200 rounded-lg p-4 border-2 border-dashed border-base-300 transition-colors">
                                 <input
                                     type="file"
-                                    accept="image/*"
+                                    accfept="image/*"
                                     multiple
                                     onChange={handleImageChange}
                                     className="file-input file-input-bordered file-input-primary w-full rounded-lg file:rounded-l-lg"
