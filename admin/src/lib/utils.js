@@ -16,7 +16,7 @@ export const getOrderStatusBadge = (status) => {
     }
 };
 
-export const getStockStatusBadge = (stock) => {
+export const getStockStatusBadge =  (stock) => {
     if (stock === 0) return { text: "Out of Stock", class: "badge-error" };
     if (stock < 20) return { text: "Low Stock", class: "badge-warning" };
     return { text: "In Stock", class: "badge-success" };
