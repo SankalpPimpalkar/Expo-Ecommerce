@@ -50,7 +50,7 @@ export default function OrdersPage() {
                             ) :
                                 (
                                     <div className="overflow-x-auto">
-                                        <table className="ta ble">
+                                        <table className="table">
                                             <thead>
                                                 <tr>Order ID</tr>
                                                 <tr>Customer</tr>
@@ -70,7 +70,7 @@ export default function OrdersPage() {
                                                             <tr key={order._id}>
                                                                 <td>
                                                                     <span className="font-medium">
-                                                                        #{order > _id.slice(-8).toUpperCase()}
+                                                                        #{order._id.slice(-8).toUpperCase()}
                                                                     </span>
                                                                 </td>
                                                                 <td>
