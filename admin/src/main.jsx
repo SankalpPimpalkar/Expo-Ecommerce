@@ -5,6 +5,13 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import { BrowserRouter } from "react-router"
 import './index.css'
 import App from './App.jsx'
+import * as Sentry from "@sentry/react";
+
+Sentry.init({
+  dsn: import.meta.env.VITE_SENTRY_DSNf,
+  sendDefaultPii: true,
+  enableLogs: true
+});
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
