@@ -36,3 +36,10 @@ export const statsAPI = {
         return data
     }
 }
+
+export const customerAPI = {
+    getAll: async () => {
+        const { data } = await AXIOS.get("/admin/customers")
+        return data
+    }
+}
